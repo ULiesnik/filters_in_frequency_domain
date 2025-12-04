@@ -1,0 +1,37 @@
+[
+    {
+        "Descryption":"Оригінальне зображення | Max значення зрізу 299 :",
+        "Spectrum":"examples/spectr_image13.png",
+        "Image":"examples/grayscale_image13.png"
+    },
+    {
+        "Descryption":"Пропуск низьких частот | Ідеальний зріз | d0=120 :",
+        "Spectrum":"examples/filtered_spectr_image13_ilp120.png",
+        "Image":"examples/filtered_image13_ilp120.png"
+    },
+    {
+        "Descryption":"Пропуск низьких частот | Гауса | d0=100 :",
+        "Spectrum":"examples/filtered_spectr_image13_glp100.png",
+        "Image":"examples/filtered_image13_glp100.png"
+    },
+    {
+        "Descryption":"Пропуск низьких частот | Баттерворта порядку 2 | d0=100 :",
+        "Spectrum":"examples/filtered_spectr_image13_blp2_100.png",
+        "Image":"examples/filtered_image13_blp2_100.png"
+    },
+    {
+        "Descryption":"Пропуск високих частот | Ідеальний зріз | d0=80 :",
+        "Spectrum":"examples/filtered_spectr_image13_ihp_80.png",
+        "Image":"examples/filtered_image13_ihp_80.png"
+    },
+    {
+        "Descryption":"Смуговий фільтр 2 | Баттерворта порядку 2 | d0=120, w=100 ",
+        "Spectrum":"examples/filtered_spectr_image13_bbs2_120_100.png",
+        "Image":"examples/filtered_image13_bbs2_120_100.png"
+    },
+    {
+        "Descryption":"Смуговий фільтр 1 | Баттерворта порядку 2 | d0=20, w=50 :",
+        "Spectrum":"examples/filtered_spectr_image13_bps2_20_50.png",
+        "Image":"examples/filtered_image13_bps2_20_50.png"
+    }  
+]
