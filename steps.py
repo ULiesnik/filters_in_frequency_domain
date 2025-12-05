@@ -92,8 +92,8 @@ def display_settings():
                         "Смуговий 1", "Смуговий 2"],
                         captions = ["Зміна для частот, нижчих за значення зрізу", 
                                     "Зміна для частот, вищих за значення зрізу",
-                                    "Зміна для всіх частот, крім тих, що розташовані між d0 i d1", 
-                                    "Зміна значень частот між двома заданими d"])
+                                    "Зміна для всіх частот, крім тих, що розташовані у смузі пропускання", 
+                                    "Зміна значень частот між двома краями смуги"])
         if st.session_state["frequency_option"] == "З пропуском низьких частот":
             st.session_state["function_option"] = st.radio( "Виберіть потрібну функцію фільтрації:",
                         ["З ідеальним зрізом", "Гауса", 
@@ -124,6 +124,12 @@ def display_settings():
 
         if st.session_state["function_option"] == "Баттерворта":
             st.session_state["order"] = st.number_input("Вкажіть порядок для фільтра Баттерворта:", 1, 100, 2)
+        if st.session_state['filter_option'] in ["Лапласа | З пропуском низьких частот", "Лапласа від Гауса | З пропуском низьких частот"]:
+            st.session_state['laplasian_option'] = st.radio("Для чого Ви хочете використати фільтр?", ["Виділення країв", "Посилення контурів"], 
+                                                                 captions=["Буде відображено безпосередньо результат фільтрації",
+                                                                           "Результат буде поєднано з оригінальною світлиною"])
+        else:
+            st.session_state['laplasian_option'] = None
     with col2:
         st.header("")
         st.subheader("Про обрані налаштування:")
@@ -133,6 +139,7 @@ def display_settings():
         st.divider()
         st.subheader("Потрібна підказка щодо інших варіантів?")
         st.write(st.session_state["notes"]["Про фільтри"][st.session_state["filter_option"]]["Альтернативи"])
+
 
 
 def display_result():
@@ -157,11 +164,15 @@ def display_result():
         st.write("Світлина після зворотного перетворення:")
         if st.session_state['grayscale_flag']:
             image_filtered = np.fft.ifft2(np.fft.ifftshift(st.session_state["filtered_ft"]))
-            img_result = np.abs(image_filtered)
+            img_result = normalize_to_uint8(np.abs(image_filtered))
+            if st.session_state["laplasian_option"]=="Посилення контурів":
+                img_result = normalize_to_uint8(st.session_state['img'] + -0.1 * img_result)
             image_result = Image.fromarray(img_result).convert('L')
         else:
             image_filtered = np.array([np.fft.ifft2(np.fft.ifftshift(channel)) for channel in st.session_state["filtered_ft"]]).transpose(1,2,0)
             img_result = normalize_to_uint8(np.abs(image_filtered))
+            if st.session_state["laplasian_option"]=="Посилення контурів":
+                img_result = normalize_to_uint8(st.session_state['img'] + -0.1 * img_result)
             image_result = Image.fromarray(img_result, 'RGB')
         st.image(image_result)
         download_img_button("Завантажити фільтроване фото", image_result,"filtered_")
@@ -255,10 +266,12 @@ def apply_transform(_image, _grayscale):
     st.session_state['grayscale_flag'] = _grayscale
     if _grayscale:
         img = Image.open(_image).convert('L')
+        st.session_state["img"] = img
         _ft = np.fft.fftshift(np.fft.fft2(img))
     else:
         img = Image.open(_image).convert('RGB')
         img = np.array(img)
+        st.session_state["img"] = img
         _ft = []
         for c in range(3):
             _ft.append(np.fft.fftshift(np.fft.fft2(img[:, :, c])))
@@ -271,6 +284,7 @@ def img_changed():
     st.session_state["filtered_ft"] = None
     st.session_state["grayscale_flag"] = None
     st.session_state["filtration_in_progress"] = False
+    st.session_state['laplasian_option'] = None
 
 
 def max_value(_ft):
