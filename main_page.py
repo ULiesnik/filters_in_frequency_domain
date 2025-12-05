@@ -1,7 +1,7 @@
 import json
 from steps import *
 
-st.set_page_config(page_title="Frequency filters", page_icon="🎨",layout="wide",
+st.set_page_config(page_title="Фільтри у частотній області", page_icon="🎨",layout="wide",
                     menu_items={"About":"Цей застосунок створено у 2025 році у межах кваліфікаційної магістерської роботи"})
 
 with open('notes.json', 'r', encoding='utf-8') as f:
