@@ -116,7 +116,7 @@ def display_settings():
             st.session_state["d0"] = _max*d0/100
             
         if st.session_state["frequency_option"] == "Смуговий 1" or st.session_state["frequency_option"] == "Смуговий 2" :
-            в0 = st.number_input("Вкажіть значення центру смуги (відсоток від максимального значення):",1, 99, 33,
+            d0 = st.number_input("Вкажіть значення центру смуги (відсоток від максимального значення):",1, 99, 33,
                         help=f"Відстань від центру спектру. Максимальне значення, що можна задати, становить 99%, мінімальне - 1%")
             st.session_state["d0"] = _max*d0/100
             w = st.number_input("Вкажіть ширину смуги:", 1, 99, 33)
