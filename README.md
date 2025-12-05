@@ -5,6 +5,10 @@
 
 ---
 
+Додаток розгорнуто на платформі Streamlit Community Cloud. Доступ можна отримати за посиланням: https://filters-in-frequency-domain.streamlit.app/
+
+---
+
 ## ✨ Можливості
 
 - ✔️ Підтримка RGB та градацій сірого  
